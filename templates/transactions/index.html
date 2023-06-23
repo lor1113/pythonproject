@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<table class="displaytable">
+    <tr>
+        <th>Merchant</th>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Time</th>
+        <th>Amount</th>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{transaction.merchant}}</td>
+        <td>{{transaction.name}}</td>
+        <td>{{transaction.tags}}</td>
+        <td>{{transaction.timestamp}}</td>
+        <td>{{transaction.amount}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<button class="newbutton" onclick="window.location.href='/transactions/new'">
+    New Transaction
+</button>
+{% endblock %}

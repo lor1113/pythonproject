@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<table class="displaytable">
+    <tr>
+        <th>Name</th>
+        <th>Colour</th>
+    </tr>
+    {% for tag in tags %}
+    <tr>
+        <td>{{tag.name}}</td>
+        <td>{{tag.colour}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<button class="newbutton" onclick="window.location.href='/tags/new'">
+    New Tag
+</button>
+
+{% endblock %}

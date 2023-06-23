@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="#" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+  <title>MoneyManager Pro</title>
+</head>
+<body>
+  <header class="top_banner">
+    <h2>Money Manager Pro</h2>
+  </header>
+  <div class="sidebar">
+    <img class="icon" src="{{ url_for('static', filename='money_manager_icon.png') }}" alt="The Money Manager Duck"><br>
+    <div class="navigation">
+        <a class="navlink" href="/">Home</a><br>
+        <a class="navlink" href="/transactions">Transactions</a><br>
+        <a class="navlink" href="/tags">Tags</a><br>
+        <a class="navlink" href="/merchants">Merchants</a><br>
+        <a class="navlink" href="/budget">Budget</a><br>
+    </div>
+  </div>
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <footer>
+    <h4>Copyright MoneyManager Pro 2023</h4>
+  </footer>
+</body>
+</html>

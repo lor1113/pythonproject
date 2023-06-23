@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<table class="displaytable">
+    <tr>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Colour</th>
+    </tr>
+    {% for merchant in merchants %}
+    <tr>
+        <td>{{merchant.name}}</td>
+        <td>{{merchant.autotags}}</td>
+        <td>{{merchant.colour}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<button class="newbutton" onclick="window.location.href='/merchants/new'">
+    New Merchant
+</button>
+
+{% endblock %}
