@@ -1,12 +1,14 @@
 from db.run_sql import run_sql
 from models.merchant import Merchant
+import repositories.tag_repository as tag_repository
 
 def save_merchant(merchant):
     sql = "INSERT INTO merchants(name,auto_tags,colour,deactivated) VALUES (%s,%s,%s,%s) RETURNING id"
     values = [merchant.name,merchant.auto_tags,merchant.colour,merchant.deactivated]
+    print(values)
     results = run_sql(sql,values)
     merchant.id = results[0]["id"]
-    return merchant
+    return merchant.id
 
 def select_all():
     merchants = []
@@ -14,6 +16,7 @@ def select_all():
     results = run_sql(sql)
     for row in results:
         merchant = Merchant(row["name"],row["auto_tags"],row["colour"],row["deactivated"],row["id"])
+        merchant.auto_tags = [tag_repository.select(tag) for tag in merchant.auto_tags]
         merchants.append(merchant)
     return merchants
 
@@ -26,6 +29,7 @@ def select(id):
     if results:
         result = results[0]
         merchant = Merchant(result["name"],result["auto_tags"],result["colour"],result["deactivated"],result["id"])
+        merchant.auto_tags = [tag_repository.select(tag) for tag in merchant.auto_tags]
     return merchant
 
 def update(merchant):

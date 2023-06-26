@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>New Tag</h2>
-<form class="newform" action="/tags" method="POST">
+<h2>New Merchant</h2>
+<form class="newform" action="/merchants" method="POST">
     <div>
         <label for="name">Name:</label>
         <input id="name" name="name" type="text">
@@ -21,8 +21,18 @@
         </select>
     </div>
     <div>
+        <label for="tags">Tags:</label>
+        <select list="tags" name="tags" multiple>
+        <datalist id="tags">
+            {% for tag in tag_list %}
+                <option value={{tag.id}}>{{tag.name}}</option>
+            {% endfor %}
+        </datalist>
+        </select>
+    </div>
+    <div>
         <label for="submit">Submit:</label>
-        <input id="submit" name="submit" type="submit" value="Create Tag">
+        <input id="submit" name="submit" type="submit" value="Create Merchant">
     </div>
 </form>
 

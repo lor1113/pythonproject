@@ -10,9 +10,13 @@
     </tr>
     {% for transaction in transactions %}
     <tr>
-        <td>{{transaction.merchant}}</td>
+        <td>{{transaction.merchant.name}}</td>
         <td>{{transaction.name}}</td>
-        <td>{{transaction.tags}}</td>
+        <td>
+            {% for tag in transaction.tags %}
+                {{tag.name}}
+            {% endfor %}
+        </td>
         <td>{{transaction.timestamp}}</td>
         <td>{{transaction.amount}}</td>
     </tr>

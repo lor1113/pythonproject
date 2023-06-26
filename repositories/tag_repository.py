@@ -6,7 +6,7 @@ def save_tag(tag):
     values = [tag.name,tag.colour,tag.deactivated]
     results = run_sql(sql,values)
     tag.id = results[0]["id"]
-    return tag
+    return tag.id
 
 def select_all():
     tags = []

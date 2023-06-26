@@ -10,7 +10,11 @@
     {% for merchant in merchants %}
     <tr>
         <td>{{merchant.name}}</td>
-        <td>{{merchant.autotags}}</td>
+        <td>
+            {% for tag in merchant.auto_tags %}
+                {{tag.name}}
+            {% endfor %}
+        </td>
         <td>{{merchant.colour}}</td>
     </tr>
     {% endfor %}

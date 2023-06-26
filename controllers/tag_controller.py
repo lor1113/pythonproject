@@ -15,11 +15,10 @@ def display_tags():
 
 @tags_blueprint.route("/tags/new")
 def tag_form():
-    return render_template("tags/new.html", colourlist = colour_list)
+    return render_template("tags/new.html", colour_list = colour_list)
 
 @tags_blueprint.route("/tags",methods=["POST"])
 def new_tag():
-    print(request.form)
     name = request.form["name"]
     colour = request.form["colour"]
     tag = Tag(name,colour)
