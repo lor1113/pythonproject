@@ -17,7 +17,6 @@ def select_all():
     for row in results:
         transaction = Transaction(row["name"],row["amount"],row["tags"],row["merchant"],row["timestamp"],row["id"])
         transaction.merchant = merchant_repository.select(transaction.merchant)
-        transaction.tags = [tag_repository.select(tag) for tag in transaction.tags]
         transactions.append(transaction)
     return transactions
 
@@ -31,7 +30,6 @@ def select(id):
         result = results[0]
         transaction = Transaction(result["name"],result["amount"],result["tags"],result["merchant"],result["timestamp"],result["id"])
         transaction.merchant = merchant_repository.select(transaction.merchant)
-        transaction.tags = [tag_repository.select(tag) for tag in transaction.tags]
     return transaction
 
 def update(transaction):

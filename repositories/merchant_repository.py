@@ -16,7 +16,6 @@ def select_all():
     results = run_sql(sql)
     for row in results:
         merchant = Merchant(row["name"],row["auto_tags"],row["colour"],row["deactivated"],row["id"])
-        merchant.auto_tags = [tag_repository.select(tag) for tag in merchant.auto_tags]
         merchants.append(merchant)
     return merchants
 
@@ -29,7 +28,6 @@ def select(id):
     if results:
         result = results[0]
         merchant = Merchant(result["name"],result["auto_tags"],result["colour"],result["deactivated"],result["id"])
-        merchant.auto_tags = [tag_repository.select(tag) for tag in merchant.auto_tags]
     return merchant
 
 def update(merchant):

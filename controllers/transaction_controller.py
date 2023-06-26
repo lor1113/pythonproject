@@ -9,6 +9,8 @@ import repositories.tag_repository as tag_repository
 
 from models.transaction import Transaction
 
+from static.constants import colour_list,colour_dict
+
 transactions_blueprint = Blueprint("transactions",__name__)
 
 @transactions_blueprint.route("/transactions")
@@ -16,7 +18,8 @@ def display_transactions():
     transactions = transaction_repository.select_all()
     merchants = merchant_repository.select_all()
     tag_list = tag_repository.select_all()
-    return render_template("transactions/index.html",transactions=transactions,merchants=merchants,tag_list=tag_list)
+    tag_dict = {tag.id:tag for tag in tag_list}
+    return render_template("transactions/index.html",transactions=transactions,merchants=merchants,tag_dict=tag_dict,colour_dict = colour_dict)
 
 @transactions_blueprint.route("/transactions/new")
 def transaction_form():
@@ -31,8 +34,12 @@ def new_transaction():
     name = request.form["name"]
     amount = request.form["amount"]
     tags = [int(tag) for tag in request.form.getlist("tags")]
-    merchant = request.form["merchant"]
+    merchant_id = request.form["merchant"]
+    merchant = merchant_repository.select(merchant_id)
+    tags.extend(merchant.auto_tags)
+    tags = list(set(tags))
+    print(tags)
     timestamp = request.form["time"]
-    transaction = Transaction(name,amount,tags,merchant,timestamp)
+    transaction = Transaction(name,amount,tags,merchant_id,timestamp)
     transaction_repository.save_transaction(transaction)
     return redirect("/transactions")

@@ -9,16 +9,26 @@
         <th>Amount</th>
     </tr>
     {% for transaction in transactions %}
-    <tr>
-        <td>{{transaction.merchant.name}}</td>
+    <tr class={{colour_dict[transaction.merchant.colour]}}>
+        <td>
+            <a href="/transactions/{{transaction.id}}" class="fill">
+                <div>{{transaction.merchant.name}}</div>
+            </a>
+        </td>
         <td>{{transaction.name}}</td>
         <td>
-            {% for tag in transaction.tags %}
-                {{tag.name}}
-            {% endfor %}
+            {% if not transaction.tags %}
+                <span>None</span>
+            {% else %}
+                {% for tag in transaction.tags %}
+                    <a href="/tags/{{tag_dict[tag].id}}" class="fill">
+                        <span class={{colour_dict[tag_dict[tag].colour]}}>{{tag_dict[tag].name}}</span>
+                    </a>
+                {% endfor %}
+            {% endif %}
         </td>
         <td>{{transaction.timestamp}}</td>
-        <td>{{transaction.amount}}</td>
+        <td>£{{transaction.amount}}</td>
     </tr>
     {% endfor %}
 </table>

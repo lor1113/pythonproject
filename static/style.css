@@ -72,4 +72,84 @@ footer{
 .displaytable{
     font-size: 20px;
     width:70%;  
+    border-collapse: collapse;
+    border: 2px solid black;
+}
+
+.displaytable th,td{
+    border: 2px solid black;
+}
+
+.displaytable span{
+    display: inline-block;
+    border: 1px solid black;
+}
+
+.displaytable div {
+    border: 1px solid black;
+}
+
+a.fill {
+    color:inherit;
+    text-decoration: none;
+}
+
+.class_white{
+    background-color: white;
+}
+
+.class_black{
+    background-color: black;
+}
+
+.class_blue{
+    background-color: blue;
+}
+
+.class_brown{
+    background-color: brown;
+}
+
+.class_navy{
+    background-color: navy;
+}
+
+.class_green{
+    background-color: green;
+}
+
+.class_grey{
+    background-color: grey;
+}
+
+.class_red{
+    background-color: red;
+}
+
+.class_crimson{
+    background-color: crimson;
+}
+
+.class_lime{
+    background-color: lime;
+}
+
+.class_magenta{
+    background-color: magenta;
+}
+
+.class_yellow{
+    background-color: yellow;
+}
+
+.class_olive{
+    background-color: olive;
+}
+
+.class_maroon{
+    background-color: maroon;
+}
+
+.class_gold-{
+    background-color: gold;
 }

@@ -12,7 +12,7 @@
         <td>{{merchant.name}}</td>
         <td>
             {% for tag in merchant.auto_tags %}
-                {{tag.name}}
+                {{tag_dict[tag].name}}
             {% endfor %}
         </td>
         <td>{{merchant.colour}}</td>

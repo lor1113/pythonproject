@@ -4,7 +4,7 @@ from models.tag import Tag
 
 import repositories.tag_repository as tag_repository
 
-from static.constants import colour_list
+from static.constants import colour_list,colour_dict
 
 tags_blueprint = Blueprint("tags",__name__)
 
@@ -15,7 +15,7 @@ def display_tags():
 
 @tags_blueprint.route("/tags/new")
 def tag_form():
-    return render_template("tags/new.html", colour_list = colour_list)
+    return render_template("tags/new.html", colour_list = colour_list,colour_dict=colour_dict)
 
 @tags_blueprint.route("/tags",methods=["POST"])
 def new_tag():
