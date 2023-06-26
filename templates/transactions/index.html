@@ -2,6 +2,51 @@
 {% block content %}
 <table class="displaytable">
     <tr>
+        <form>
+            <td>
+                <input class="fill" id="filter" name="filter" type="submit" value="Filter">
+            </td>
+            <td>
+                <label for="merchant">Merchant:</label>
+                <select list="merchant" name="merchant">
+                <datalist id="merchant">
+                    <option selected value></option>
+                    {% for merchant in merchant_list %}
+                        <option value={{merchant.id}}>{{merchant.name}}</option>
+                    {% endfor %}
+                </datalist>
+                </select>
+            </td>
+            <td>
+                <label for="name">Name:</label>
+                <input id="name" name="name" type="text" minlength="3">
+            </td>
+            <td>
+                <label for="tags">Tags:</label>
+                <select list="tags" name="tags" size="3" multiple>
+                <datalist id="tags">
+                    {% for tag in tag_list %}
+                        <option value={{tag.id}}>{{tag.name}}</option>
+                    {% endfor %}
+                </datalist>
+                </select>
+            </td>
+            <td>
+                <label for="before_time">Before:</label>
+                <input id="before_time" name="before_time" type="date"><br>
+                <label for="after_time">After:</label>
+                <input id="after_time" name="after_time" type="date">
+            </td>
+            <td>
+                <label for="above">Above:</label>
+                <input id="above" name="above" type="number"><br>
+                <label for="below">Below:</label>
+                <input id="below" name="below" type="number">
+            </td>
+        </form>
+    </tr>
+    <tr>
+        <th>ID</th>
         <th>Merchant</th>
         <th>Name</th>
         <th>Tags</th>
@@ -10,6 +55,9 @@
     </tr>
     {% for transaction in transactions %}
     <tr class={{colour_dict[transaction.merchant.colour]}}>
+        <td>
+            {{transaction.id}}
+        </td>
         <td>
             <a href="/transactions/{{transaction.id}}" class="fill">
                 <div>{{transaction.merchant.name}}</div>

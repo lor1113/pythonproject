@@ -11,11 +11,11 @@ tags_blueprint = Blueprint("tags",__name__)
 @tags_blueprint.route("/tags")
 def display_tags():
     tags = tag_repository.select_all()
-    return render_template("tags/index.html",tags=tags)
+    return render_template("tags/index.html",tags=tags,colour_dict=colour_dict)
 
 @tags_blueprint.route("/tags/new")
 def tag_form():
-    return render_template("tags/new.html", colour_list = colour_list,colour_dict=colour_dict)
+    return render_template("tags/new.html", colour_list = colour_list)
 
 @tags_blueprint.route("/tags",methods=["POST"])
 def new_tag():

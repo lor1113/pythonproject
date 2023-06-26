@@ -6,7 +6,7 @@
         <th>Colour</th>
     </tr>
     {% for tag in tags %}
-    <tr>
+    <tr class={{colour_dict[tag.colour]}}>
         <td>{{tag.name}}</td>
         <td>{{tag.colour}}</td>
     </tr>

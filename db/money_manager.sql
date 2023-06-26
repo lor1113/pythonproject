@@ -23,5 +23,9 @@ CREATE TABLE transactions (
   amount INT,
   timestamp TIMESTAMP,
   tags INT[],
-  merchant INT
+  merchant int,
+  CONSTRAINT fk_merchant
+    FOREIGN KEY(merchant)
+      REFERENCES merchants(id)
+      ON DELETE CASCADE
 );
