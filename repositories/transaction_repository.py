@@ -33,8 +33,9 @@ def select(id):
     return transaction
 
 def update(transaction):
-    sql = "UPDATE transactions SET (name,amount,tags,merchant,timestamp) VALUES (%s,%s,%s,%s,%s) WHERE id = %s"
+    sql = "UPDATE transactions SET (name,amount,tags,merchant,timestamp) = (%s,%s,%s,%s,%s) WHERE id = %s"
     values = [transaction.name,transaction.amount,transaction.tags,transaction.merchant,transaction.timestamp,transaction.id]
+    print(values)
     run_sql(sql, values)
 
 def delete(id):

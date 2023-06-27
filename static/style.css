@@ -89,6 +89,15 @@ footer{
     border: 1px solid black;
 }
 
+.nostyle{
+    width:100%;
+}
+
+.nostyle td {
+    border:none;
+    text-align: center;
+}
+
 a.fill {
     color:inherit;
     text-decoration: none;
@@ -98,6 +107,13 @@ input.fill {
     width:100%;
     height:50px;
     font-size: 20px;
+}
+
+.sortlink {
+    display: block;
+    color:inherit;
+    font-size: 20px;
+    text-decoration: none;
 }
 
 .class_white{

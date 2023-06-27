@@ -10,38 +10,112 @@
                 <label for="merchant">Merchant:</label>
                 <select list="merchant" name="merchant">
                 <datalist id="merchant">
-                    <option selected value></option>
+                    {% if not args.__contains__("merchant") %}
+                        <option selected value></option>
+                    {% else %}
+                        <option></option>
+                    {% endif %}
                     {% for merchant in merchant_list %}
-                        <option value={{merchant.id}}>{{merchant.name}}</option>
+                        {% if args.__contains__("merchant") %}
+                            {% if args.merchant == merchant.id %}
+                                <option value={{merchant.id}} selected>{{merchant.name}}</option>
+                            {% else %}
+                                <option value={{merchant.id}}>{{merchant.name}}</option>
+                            {% endif %}
+                        {% else %}
+                            <option value={{merchant.id}}>{{merchant.name}}</option>
+                        {% endif %}
                     {% endfor %}
                 </datalist>
                 </select>
             </td>
             <td>
                 <label for="name">Name:</label>
-                <input id="name" name="name" type="text" minlength="3">
+                {% if args.__contains__("merchant") %}
+                    <input id="name" name="name" type="text" minlength="3" value={{args.name}}>
+                {% else %}
+                    <input id="name" name="name" type="text" minlength="3">
+                {% endif %}
             </td>
             <td>
                 <label for="tags">Tags:</label>
                 <select list="tags" name="tags" size="3" multiple>
                 <datalist id="tags">
-                    {% for tag in tag_list %}
-                        <option value={{tag.id}}>{{tag.name}}</option>
-                    {% endfor %}
+                    {% if args.__contains__("merchant") %}
+                        {% for tag in tag_list %}
+                            {% if tag.id in args.tags %}
+                                <option value={{tag.id}} selected>{{tag.name}}</option>
+                            {% else %}
+                                <option value={{tag.id}}>{{tag.name}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% for tag in tag_list %}
+                            <option value={{tag.id}}>{{tag.name}}</option>
+                        {% endfor %}
+                    {% endif %}
                 </datalist>
                 </select>
             </td>
             <td>
-                <label for="before_time">Before:</label>
-                <input id="before_time" name="before_time" type="date"><br>
-                <label for="after_time">After:</label>
-                <input id="after_time" name="after_time" type="date">
+                <table class="nostyle">
+                    <tr>
+                        <td>
+                            <a class="sortlink" title="Sort Ascending" href={{sort_url("timeup")}}>&and;</a>
+                        </td>
+                        <td>
+                            <label for="before_time">Before:</label>
+                            {% if args.__contains__("before_time") %}
+                                <input id="before_time" name="before_time" type="date" value={{args.before_time}}><br>
+                            {% else %}
+                                <input id="before_time" name="before_time" type="date"><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="sortlink" title="Sort Descending" href={{sort_url("timedown")}}>&or;</a>
+                        </td>
+                        <td>
+                            <label for="after_time">After:</label>
+                            {% if args.__contains__("after_time") %}
+                                <input id="after_time" name="after_time" type="date" value={{args.after_time}}>
+                            {% else %}
+                                <input id="after_time" name="after_time" type="date">
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
             </td>
             <td>
-                <label for="above">Above:</label>
-                <input id="above" name="above" type="number"><br>
-                <label for="below">Below:</label>
-                <input id="below" name="below" type="number">
+                <table class="nostyle">
+                    <tr>
+                        <td>
+                            <a class="sortlink" title="Sort Ascending" href={{sort_url("moneyup")}}>&and;</a>
+                        </td>
+                        <td>
+                            <label for="above">Above:</label>
+                            {% if args.__contains__("above") %}
+                                <input id="above" name="above" type="number" value={{args.above}}><br>
+                            {% else %}
+                                <input id="above" name="above" type="number"><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="sortlink" title="Sort Descending" href={{sort_url("moneydown")}}>&or;</a>
+                        </td>
+                        <td>
+                            <label for="below">Below:</label>
+                            {% if args.__contains__("below") %}
+                                <input id="below" name="below" type="number" value={{args.below}}><br>
+                            {% else %}
+                                <input id="below" name="below" type="number"><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
             </td>
         </form>
     </tr>
@@ -56,10 +130,12 @@
     {% for transaction in transactions %}
     <tr class={{colour_dict[transaction.merchant.colour]}}>
         <td>
-            {{transaction.id}}
+            <a href="/transactions/{{transaction.id}}" class="fill">
+                <div>{{transaction.id}}</div>
+            </a>
         </td>
         <td>
-            <a href="/transactions/{{transaction.id}}" class="fill">
+            <a href="/merchants/{{transaction.merchant.id}}" class="fill">
                 <div>{{transaction.merchant.name}}</div>
             </a>
         </td>

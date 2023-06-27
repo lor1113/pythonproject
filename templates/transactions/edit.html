@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit Transaction</h2>
+<form class="newform" action="/transactions/{{transaction.id}}" method="POST">
+    <div>
+        <label for="name">Name:</label>
+        <input id="name" name="name" type="text" value={{transaction.name}}>
+    </div>
+    <div>
+        <label for="amount">Amount:</label>
+        <input id="amount" name="amount" type="number" value={{transaction.amount}}>
+    </div>
+    <div>
+        <label for="time">Time:</label>
+        <input id="time" name="time" type="datetime-local" value={{date_string}}>
+    </div>
+    <div>
+        <label for="merchant">Merchant:</label>
+        <select list="merchant" name="merchant">
+        <datalist id="merchant">
+            {% for merchant in merchant_list %}
+                {% if merchant.id == transaction.merchant.id %}
+                    <option value={{merchant.id}} selected>{{merchant.name}}</option>
+                {% else %}
+                    <option value={{merchant.id}}>{{merchant.name}}</option>
+                {% endif %}
+            {% endfor %}
+        </datalist>
+        </select>
+    </div>
+    <div>
+        <label for="tags">Tags:</label>
+        <select list="tags" name="tags" multiple>
+        <datalist id="tags">
+            {% for tag in tag_list %}
+                {% if tag.id in transaction.tags %}
+                    <option value={{tag.id}} selected>{{tag.name}}</option>
+                {% else %}
+                    <option value={{tag.id}}>{{tag.name}}</option>
+                {% endif %}
+            {% endfor %}
+        </datalist>
+        </select>
+    </div>
+    <div>
+        <label for="submit">Submit:</label>
+        <input id="submit" name="submit" type="submit" value="Edit Transaction">
+    </div>
+</form>
+{% endblock %}
