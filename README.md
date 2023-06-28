@@ -26,3 +26,5 @@ Build an app that allows a user to track their spending.
 * Flask for the web framework.
 * Jinja2 for HTML composing.
 * Unittest for testing.
+* SQL for the database.
+* Psycopg for python SQL driver.
