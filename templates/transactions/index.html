@@ -41,18 +41,22 @@
                 <label for="tags">Tags:</label>
                 <select list="tags" name="tags" size="3" multiple>
                 <datalist id="tags">
-                    {% if args.__contains__("merchant") %}
-                        {% for tag in tag_list %}
-                            {% if tag.id in args.tags %}
-                                <option value={{tag.id}} selected>{{tag.name}}</option>
-                            {% else %}
-                                <option value={{tag.id}}>{{tag.name}}</option>
-                            {% endif %}
-                        {% endfor %}
+                    {% if not tag_list %}
+                        <option disabled>No Tags</option>
                     {% else %}
-                        {% for tag in tag_list %}
-                            <option value={{tag.id}}>{{tag.name}}</option>
-                        {% endfor %}
+                        {% if args.__contains__("merchant") %}
+                            {% for tag in tag_list %}
+                                {% if tag.id in args.tags %}
+                                    <option value={{tag.id}} selected>{{tag.name}}</option>
+                                {% else %}
+                                    <option value={{tag.id}}>{{tag.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% for tag in tag_list %}
+                                <option value={{tag.id}}>{{tag.name}}</option>
+                            {% endfor %}
+                        {% endif %}
                     {% endif %}
                 </datalist>
                 </select>
@@ -141,15 +145,11 @@
         </td>
         <td>{{transaction.name}}</td>
         <td>
-            {% if not transaction.tags %}
-                <span>None</span>
-            {% else %}
-                {% for tag in transaction.tags %}
-                    <a href="/tags/{{tag.id}}" class="fill">
-                        <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
-                    </a>
-                {% endfor %}
-            {% endif %}
+            {% for tag in transaction.tags %}
+                <a href="/tags/{{tag.id}}" class="fill">
+                    <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
+                </a>
+            {% endfor %}
         </td>
         <td>{{transaction.timestamp}}</td>
         <td>£{{transaction.amount}}</td>

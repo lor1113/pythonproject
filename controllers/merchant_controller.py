@@ -17,7 +17,7 @@ def display_merchants():
 
 @merchants_blueprint.route("/merchants/new")
 def merchant_form():
-    tag_list = tag_repository.select_all()
+    tag_list = tag_repository.select_active()
     return render_template("merchants/new.html",tag_list=tag_list,colour_list=colour_list)
 
 @merchants_blueprint.route("/merchants",methods=["POST"])
@@ -50,7 +50,7 @@ def delete_merchant(id):
 @merchants_blueprint.route("/merchants/<id>/edit")
 def merchant_edit_form(id):
     merchant = merchant_repository.select(id)
-    tag_list = tag_repository.select_all()
+    tag_list = tag_repository.select_active()
     return render_template("merchants/edit.html",merchant=merchant,tag_list=tag_list,colour_list=colour_list)
 
 @merchants_blueprint.route("/merchants/<id>",methods=["POST"])
@@ -61,4 +61,4 @@ def edit_merchant(id):
     merchant = Merchant(name,None,colour,tag_ids=tag_ids)
     merchant.id = id
     merchant_repository.update(merchant)
-    return redirect("/merchants/" + id)
+    return redirect("/merchants/" +id)

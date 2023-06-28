@@ -14,7 +14,7 @@
         <tr>
             <td>Merchant Tags</td>
             <td>
-                {% for tag in merchant.auto_tags %}
+                {% for tag in merchant.tags %}
                     <a href="/tags/{{tag.id}}" class="fill">
                         <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
                     </a>
@@ -56,32 +56,34 @@
             <th>Time</th>
             <th>Amount</th>
         </tr>
-        {% for transaction in transactions %}
-        <tr class={{colour_dict[transaction.merchant.colour]}}>
-            <td>
-                <a href="/transactions/{{transaction.id}}" class="fill">
-                    <div>{{transaction.id}}</div>
-                </a>
-            </td>
-            <td>
-                {{transaction.merchant.name}}
-            </td>
-            <td>{{transaction.name}}</td>
-            <td>
-                {% if not transaction.tags %}
-                    <span>None</span>
-                {% else %}
+        {% if not transactions %}
+            <tr>
+                <td align="center" colspan="6">No Transactions</td>
+            </tr>
+        {% else %}
+            {% for transaction in transactions %}
+            <tr class={{colour_dict[transaction.merchant.colour]}}>
+                <td>
+                    <a href="/transactions/{{transaction.id}}" class="fill">
+                        <div>{{transaction.id}}</div>
+                    </a>
+                </td>
+                <td>
+                    {{transaction.merchant.name}}
+                </td>
+                <td>{{transaction.name}}</td>
+                <td>
                     {% for tag in transaction.tags %}
                         <a href="/tags/{{tag.id}}" class="fill">
                             <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
                         </a>
                     {% endfor %}
-                {% endif %}
-            </td>
-            <td>{{transaction.timestamp}}</td>
-            <td>£{{transaction.amount}}</td>
-        </tr>
-        {% endfor %}
+                </td>
+                <td>{{transaction.timestamp}}</td>
+                <td>£{{transaction.amount}}</td>
+            </tr>
+            {% endfor %}
+        {% endif %}
     </table>
 </span>
 

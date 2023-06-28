@@ -12,7 +12,7 @@ tags_blueprint = Blueprint("tags",__name__)
 @tags_blueprint.route("/tags")
 def display_tags():
     print("display tags")
-    tags = tag_repository.select_all()
+    tags = tag_repository.select_active()
     return render_template("tags/index.html",tags=tags,colour_dict=colour_dict)
 
 @tags_blueprint.route("/tags/new")
@@ -47,3 +47,10 @@ def edit_tag(id):
     tag.id = id
     tag_repository.update(tag)
     return redirect("/tags/"+id)
+
+@tags_blueprint.route("/tags/<id>/delete")
+def delete_tag(id):
+    tag = tag_repository.select(id)
+    tag.deactivated = True
+    tag_repository.update(tag)
+    return redirect("/tags")

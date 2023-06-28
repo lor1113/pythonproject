@@ -27,8 +27,8 @@ def display_transactions():
     transactions.sort(key=lambda transaction: int(transaction.id))
     if args.__contains__("sortdir"):
         transactions = transactions_sort(transactions,args["sortdir"])
-    merchant_list = merchant_repository.select_all()
-    tag_list = tag_repository.select_all()
+    merchant_list = merchant_repository.select_active()
+    tag_list = tag_repository.select_active()
     return render_template("transactions/index.html",transactions=transactions,merchant_list=merchant_list,tag_list=tag_list,colour_dict = colour_dict,args=args)
 
 def transaction_filter(transactions,args):
@@ -85,8 +85,8 @@ def transactions_sort(transactions,sortdir):
 def transaction_form():
     now = datetime.now()
     date_string = now.strftime("%Y-%m-%dT%H:%M")
-    merchant_list = merchant_repository.select_all()
-    tag_list = tag_repository.select_all()
+    merchant_list = merchant_repository.select_active()
+    tag_list = tag_repository.select_active()
     return render_template("transactions/new.html",tag_list=tag_list,merchant_list=merchant_list,date_string=date_string)
 
 @transactions_blueprint.route("/transactions",methods=["POST"])
@@ -106,8 +106,8 @@ def new_transaction():
 @transactions_blueprint.route("/transactions/<id>/edit")
 def transaction_edit_form(id):
     transaction = transaction_repository.select(id)
-    merchant_list = merchant_repository.select_all()
-    tag_list = tag_repository.select_all()
+    merchant_list = merchant_repository.select_active()
+    tag_list = tag_repository.select_active()
     date_string = transaction.timestamp.strftime("%Y-%m-%dT%H:%M")
     return render_template("transactions/edit.html",transaction=transaction,tag_list=tag_list,merchant_list=merchant_list,date_string = date_string)
 
@@ -124,17 +124,19 @@ def edit_transaction(id):
     merchant_id = request.form["merchant"]
     merchant = merchant_repository.select(merchant_id)
     tag_ids = [int(tag) for tag in request.form.getlist("tags")]
-    tag_ids.extend(merchant.auto_tags)
+    tag_ids.extend(merchant.tag_ids)
     tag_ids = list(set(tag_ids))
     transaction = Transaction(name,amount,None,merchant,timestamp,tag_ids=tag_ids)
+    print(transaction.tag_ids)
+    transaction.id = id
     transaction_repository.update(transaction)
-    return redirect("/transactions"+id)
+    return redirect("/transactions/"+id)
 
 @transactions_blueprint.route("/transactions/<id>/delete")
 def delete_transaction(id):
-    transaction_repository.select_all()
+    transaction_repository.select_active()
     transaction = transaction_repository.select(id)
     transaction.deactivated = True
     transaction_repository.update(transaction)
-    transaction_repository.select_all()
+    transaction_repository.select_active()
     return redirect("/transactions")

@@ -28,9 +28,13 @@
         <label for="tags">Tags:</label>
         <select list="tags" name="tags" multiple>
         <datalist id="tags">
-            {% for tag in tag_list %}
-                <option value={{tag.id}}>{{tag.name}}</option>
-            {% endfor %}
+            {% if not tag_list %}
+                <option disabled>No Tags</option>
+            {% else %}
+                {% for tag in tag_list %}
+                    <option value={{tag.id}}>{{tag.name}}</option>
+                {% endfor %}
+            {% endif %}
         </datalist>
         </select>
     </div>

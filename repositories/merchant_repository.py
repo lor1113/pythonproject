@@ -3,7 +3,7 @@ from models.merchant import Merchant
 import repositories.tag_repository as tag_repository
 
 def save_merchant(merchant):
-    sql = "INSERT INTO merchants(name,auto_tags,colour,deactivated) VALUES (%s,%s,%s,%s) RETURNING id"
+    sql = "INSERT INTO merchants(name,tags,colour,deactivated) VALUES (%s,%s,%s,%s) RETURNING id"
     values = [merchant.name,merchant.tag_ids,merchant.colour,merchant.deactivated]
     results = run_sql(sql,values)
     merchant.id = results[0]["id"]
@@ -15,7 +15,7 @@ def select_all():
     results = run_sql(sql)
     for row in results:
         tags = []
-        for tag in row["auto_tags"]:
+        for tag in row["tags"]:
             tags.append(tag_repository.select(tag))
         merchant = Merchant(row["name"],tags,row["colour"],row["deactivated"],row["id"])
         merchants.append(merchant)
@@ -28,7 +28,7 @@ def select_active():
     results = run_sql(sql, values)
     for row in results:
         tags = []
-        for tag in row["auto_tags"]:
+        for tag in row["tags"]:
             tags.append(tag_repository.select(tag))
         merchant = Merchant(row["name"],tags,row["colour"],row["deactivated"],row["id"])
         merchants.append(merchant)
@@ -42,14 +42,15 @@ def select(id):
 
     if results:
         result = results[0]
+        print(result)
         tags = []
-        for tag in result["auto_tags"]:
+        for tag in result["tags"]:
             tags.append(tag_repository.select(tag))
         merchant = Merchant(result["name"],tags,result["colour"],result["deactivated"],result["id"])
     return merchant
 
 def update(merchant):
-    sql = "UPDATE merchants SET (name,auto_tags,colour,deactivated) = (%s,%s,%s,%s) WHERE id = %s"
+    sql = "UPDATE merchants SET (name,tags,colour,deactivated) = (%s,%s,%s,%s) WHERE id = %s"
     values = [merchant.name, merchant.tag_ids,merchant.colour,merchant.deactivated, merchant.id]
     run_sql(sql, values)
 

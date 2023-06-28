@@ -17,6 +17,16 @@ def select_all():
         tags.append(tag)
     return tags
 
+def select_active():
+    tags = []
+    sql = "SELECT * FROM tags WHERE deactivated = %s"
+    values = [False]
+    results = run_sql(sql, values)
+    for row in results:
+        tag = Tag(row["name"],row["colour"],row["deactivated"],row["id"])
+        tags.append(tag)
+    return tags
+
 def select(id):
     tag = None
     sql = "SELECT * FROM tags WHERE id = %s"

@@ -5,7 +5,7 @@ import repositories.tag_repository as tag_repository
 
 def save_transaction(transaction):
     sql = "INSERT INTO transactions(name,amount,tags,merchant,timestamp,deactivated) VALUES (%s,%s,%s,%s,%s,%s) RETURNING id"
-    values = [transaction.name,transaction.amount,transaction.tag_ids,transaction.merchant,transaction.timestamp,transaction.deactivated]
+    values = [transaction.name,transaction.amount,transaction.tag_ids,transaction.merchant.id,transaction.timestamp,transaction.deactivated]
     results = run_sql(sql,values)
     transaction.id = results[0]["id"]
     return transaction

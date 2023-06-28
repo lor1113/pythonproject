@@ -33,13 +33,17 @@
         <label for="tags">Tags:</label>
         <select list="tags" name="tags" multiple>
         <datalist id="tags">
-            {% for tag in tag_list %}
-                {% if tag.id in transaction.tags %}
-                    <option value={{tag.id}} selected>{{tag.name}}</option>
-                {% else %}
-                    <option value={{tag.id}}>{{tag.name}}</option>
-                {% endif %}
-            {% endfor %}
+            {% if not tag_list %}
+                <option disabled>No Tags</option>
+            {% else %}  
+                {% for tag in tag_list %}
+                    {% if tag.id in transaction.tag_ids %}
+                        <option value={{tag.id}} selected>{{tag.name}}</option>
+                    {% else %}
+                        <option value={{tag.id}}>{{tag.name}}</option>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </datalist>
         </select>
     </div>

@@ -13,7 +13,7 @@ CREATE TABLE merchants (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255),
   colour VARCHAR(255),
-  auto_tags INT[],
+  tags INT[],
   deactivated BOOLEAN
 );
 

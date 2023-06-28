@@ -18,10 +18,10 @@ print(merchant_repository.select_all())
 
 tag1 = Tag("food","Red")
 tag_id = tag_repository.save_tag(tag1)
-merchant1 = Merchant("Amazon",[tag_id],"Green")
+merchant1 = Merchant("Amazon",None,"Green",tag_ids=[tag_id])
 merchant_id = merchant_repository.save_merchant(merchant1)
 now = datetime.utcnow()
-transaction1 = Transaction("Food from Amazon",20,[tag_id],merchant_id,now.strftime("%Y-%m-%d %H:%M:%S"))
+transaction1 = Transaction("Food from Amazon",20,None,merchant1,now.strftime("%Y-%m-%d %H:%M:%S"),tag_ids=[tag_id])
 transaction_repository.save_transaction(transaction1)
 
 

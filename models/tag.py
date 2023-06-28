@@ -4,9 +4,3 @@ class Tag:
       self.colour = colour
       self.id = id
       self.deactivated = deactivated
-    
-    def deactivate(self):
-      self.deactivated = True
-    
-    def reactivate(self):
-      self.deactivated = False
