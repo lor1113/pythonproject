@@ -11,7 +11,6 @@ tags_blueprint = Blueprint("tags",__name__)
 
 @tags_blueprint.route("/tags")
 def display_tags():
-    print("display tags")
     tags = tag_repository.select_active()
     return render_template("tags/index.html",tags=tags,colour_dict=colour_dict)
 

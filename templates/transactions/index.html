@@ -44,19 +44,13 @@
                     {% if not tag_list %}
                         <option disabled>No Tags</option>
                     {% else %}
-                        {% if args.__contains__("merchant") %}
-                            {% for tag in tag_list %}
-                                {% if tag.id in args.tags %}
-                                    <option value={{tag.id}} selected>{{tag.name}}</option>
-                                {% else %}
-                                    <option value={{tag.id}}>{{tag.name}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            {% for tag in tag_list %}
+                        {% for tag in tag_list %}
+                            {% if tag.id in args.tags %}
+                                <option value={{tag.id}} selected>{{tag.name}}</option>
+                            {% else %}
                                 <option value={{tag.id}}>{{tag.name}}</option>
-                            {% endfor %}
-                        {% endif %}
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 </datalist>
                 </select>
@@ -156,7 +150,10 @@
     </tr>
     {% endfor %}
 </table>
-<button class="newbutton" onclick="window.location.href='/transactions/new'">
-    New Transaction
-</button>
+<form action="/transactions/new">
+    <button class="newbutton" type="submit" value="submit">
+        New Transaction
+    </button>
+</form>
+
 {% endblock %}

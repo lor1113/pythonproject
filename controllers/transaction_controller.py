@@ -17,19 +17,23 @@ transactions_blueprint = Blueprint("transactions",__name__)
 def display_transactions():
     args = request.args
     transactions = transaction_repository.select_active()
+    selected_tags = []
     if args.__contains__("filter"):
         transactions = transaction_filter(transactions,args)
+        if args.__contains__("tags"):
+            selected_tags = [int(x) for x in args.getlist("tags")]
         args = dict(args)
         if args["merchant"]:
             args["merchant"] = int(args["merchant"])
-        if args.__contains__("tags"):
-            args["tags"] = [int(x) for x in args["tags"]]
+        if selected_tags:
+            args["tags"] = selected_tags
+
     transactions.sort(key=lambda transaction: int(transaction.id))
     if args.__contains__("sortdir"):
         transactions = transactions_sort(transactions,args["sortdir"])
     merchant_list = merchant_repository.select_active()
     tag_list = tag_repository.select_active()
-    return render_template("transactions/index.html",transactions=transactions,merchant_list=merchant_list,tag_list=tag_list,colour_dict = colour_dict,args=args)
+    return render_template("transactions/index.html",transactions=transactions,merchant_list=merchant_list,tag_list=tag_list,colour_dict=colour_dict,args=args)
 
 def transaction_filter(transactions,args):
     out = []
@@ -124,10 +128,7 @@ def edit_transaction(id):
     merchant_id = request.form["merchant"]
     merchant = merchant_repository.select(merchant_id)
     tag_ids = [int(tag) for tag in request.form.getlist("tags")]
-    tag_ids.extend(merchant.tag_ids)
-    tag_ids = list(set(tag_ids))
     transaction = Transaction(name,amount,None,merchant,timestamp,tag_ids=tag_ids)
-    print(transaction.tag_ids)
     transaction.id = id
     transaction_repository.update(transaction)
     return redirect("/transactions/"+id)

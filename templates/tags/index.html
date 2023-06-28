@@ -17,8 +17,11 @@
     {% endfor %}
 </table>
 
-<button class="newbutton" onclick="window.location.href='/tags/new'">
-    New Tag
-</button>
+<form action="/tags/new">
+    <button class="newbutton" type="submit" value="submit">
+        New Tag
+    </button>
+</form>
+
 
 {% endblock %}

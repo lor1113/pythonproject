@@ -42,7 +42,6 @@ def select(id):
 
     if results:
         result = results[0]
-        print(result)
         tags = []
         for tag in result["tags"]:
             tags.append(tag_repository.select(tag))

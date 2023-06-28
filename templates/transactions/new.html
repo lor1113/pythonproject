@@ -4,11 +4,11 @@
 <form class="newform" action="/transactions" method="POST">
     <div>
         <label for="name">Name:</label>
-        <input id="name" name="name" type="text">
+        <input id="name" name="name" type="text" minlength="3" required>
     </div>
     <div>
         <label for="amount">Amount:</label>
-        <input id="amount" name="amount" type="number">
+        <input id="amount" name="amount" type="number" minlength="1" required>
     </div>
     <div>
         <label for="time">Time:</label>

@@ -25,12 +25,11 @@ def home():
 def testing():
     return render_template("base.html")
 
-@app.route("/warning")
+@app.route("/warning",methods=["POST"])
 def warning():
-    args = request.args
-    yes_url = args["yes_url"]
-    no_url = args["no_url"]
-    message = args["message"]
+    yes_url = request.form["yes_url"]
+    no_url = request.form["no_url"]
+    message = request.form["message"]
     return render_template("warning.html",yes_url=yes_url,no_url=no_url,message=message)
 
 if __name__ == '__main__':

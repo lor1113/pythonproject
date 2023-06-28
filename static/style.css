@@ -75,6 +75,11 @@ footer{
     font-size: 20px;
 }
 
+.newform{
+    padding: 10px;
+    font-size: 24px;
+}
+
 .leftspan{
     position: fixed;
     width: 25%;
@@ -209,6 +214,6 @@ input.fill {
     background-color: maroon;
 }
 
-.class_gold-{
+.class_gold{
     background-color: gold;
 }

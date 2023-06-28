@@ -5,11 +5,11 @@
 <form class="newform" action="/transactions/{{transaction.id}}" method="POST">
     <div>
         <label for="name">Name:</label>
-        <input id="name" name="name" type="text" value={{transaction.name}}>
+        <input id="name" name="name" type="text" value={{transaction.name}} minlength="3" required>
     </div>
     <div>
         <label for="amount">Amount:</label>
-        <input id="amount" name="amount" type="number" value={{transaction.amount}}>
+        <input id="amount" name="amount" type="number" value={{transaction.amount}} minlength="1" required>
     </div>
     <div>
         <label for="time">Time:</label>
@@ -35,7 +35,7 @@
         <datalist id="tags">
             {% if not tag_list %}
                 <option disabled>No Tags</option>
-            {% else %}  
+            {% else %}
                 {% for tag in tag_list %}
                     {% if tag.id in transaction.tag_ids %}
                         <option value={{tag.id}} selected>{{tag.name}}</option>

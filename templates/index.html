@@ -4,8 +4,10 @@
 
 <h3>Login to view your transactions!</h3>
 
-<button onclick="window.location.href='/transactions'">
-    Log In
-</button>
+<form action="/transactions">
+    <button class="warningbutton" type="submit" value="submit">
+        Log In
+    </button>
+</form>
 
 {% endblock %}

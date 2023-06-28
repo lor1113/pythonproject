@@ -26,8 +26,12 @@
     {% endfor %}
 </table>
 
-<button class="newbutton" onclick="window.location.href='/merchants/new'">
-    New Merchant
-</button>
+<form action="/merchants/new">
+    <button class="newbutton" type="submit" value="submit">
+        New Merchant
+    </button>
+</form>
+
+
 
 {% endblock %}
