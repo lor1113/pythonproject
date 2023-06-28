@@ -145,8 +145,8 @@
                 <span>None</span>
             {% else %}
                 {% for tag in transaction.tags %}
-                    <a href="/tags/{{tag_dict[tag].id}}" class="fill">
-                        <span class={{colour_dict[tag_dict[tag].colour]}}>{{tag_dict[tag].name}}</span>
+                    <a href="/tags/{{tag.id}}" class="fill">
+                        <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
                     </a>
                 {% endfor %}
             {% endif %}

@@ -7,7 +7,11 @@
     </tr>
     {% for tag in tags %}
     <tr class={{colour_dict[tag.colour]}}>
-        <td>{{tag.name}}</td>
+        <td>
+            <a href="/tags/{{tag.id}}" class="fill">
+                <div class={{colour_dict[tag.colour]}}>{{tag.name}}</div>
+            </a>
+        </td>
         <td>{{tag.colour}}</td>
     </tr>
     {% endfor %}

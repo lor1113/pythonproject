@@ -1,8 +1,58 @@
 {% extends "base.html" %}
 {% block content %}
 
-<button class="newbutton" onclick="window.location.href='/transactions/{{transaction.id}}/edit'">
-    Edit Transaction
-</button>
+<table class="showtable">
+    <tr>
+        <td>Transaction Name</td>
+        <td>{{transaction.name}}</td>
+    </tr>
+    <tr>
+        <td>Transaction Amount</td>
+        <td>{{transaction.amount}}</td>
+    </tr>
+    <tr>
+        <td>Transaction Merchant</td>
+        <td>{{transaction.merchant.name}}</td>
+    </tr>
+    <tr>
+        <td>Transaction Tags</td>
+        <td>
+            {% for tag in transaction.tags %}
+                <a href="/tags/{{tag.id}}" class="fill">
+                    <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
+                </a>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>Transaction Time</td>
+        <td>{{transaction.timestamp}}</td>
+    </tr>
+    <tr>
+        <td>Edit Transaction</td>
+        <td>
+            <form action="/transactions/{{transaction.id}}/edit">
+                <button class="formbutton" type="submit" value="submit">
+                    Edit Transaction
+                </button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>Delete Transaction</td>
+        <td>
+            <form action="/warning">
+                <button class="formbutton" type="submit" value="submit">
+                    Delete Transaction
+                </button>
+                <input type="hidden" id="yes_url" name="yes_url" value="/transactions/{{transaction.id}}/delete">
+                <input type="hidden" id="no_url" name="no_url" value="/transactions/{{transaction.id}}">
+                <input type="hidden" id="message" name="message" value="Are you sure you want to delete the transaction {{transaction.name}}? This action is irreversible.">
+            </form>
+        </td>
+    </tr>
+</table>
+
+
 
 {% endblock %}

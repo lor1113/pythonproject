@@ -19,13 +19,19 @@ def sort_url(sortdir):
 
 @app.route('/')
 def home():
-    print("Home")
     return render_template('index.html')
 
 @app.route('/testing')
 def testing():
-    print("testing")
     return render_template("base.html")
+
+@app.route("/warning")
+def warning():
+    args = request.args
+    yes_url = args["yes_url"]
+    no_url = args["no_url"]
+    message = args["message"]
+    return render_template("warning.html",yes_url=yes_url,no_url=no_url,message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -15,9 +15,8 @@ transactions_blueprint = Blueprint("transactions",__name__)
 
 @transactions_blueprint.route("/transactions")
 def display_transactions():
-    print("display transactions")
     args = request.args
-    transactions = transaction_repository.select_all()
+    transactions = transaction_repository.select_active()
     if args.__contains__("filter"):
         transactions = transaction_filter(transactions,args)
         args = dict(args)
@@ -25,10 +24,12 @@ def display_transactions():
             args["merchant"] = int(args["merchant"])
         if args.__contains__("tags"):
             args["tags"] = [int(x) for x in args["tags"]]
+    transactions.sort(key=lambda transaction: int(transaction.id))
+    if args.__contains__("sortdir"):
+        transactions = transactions_sort(transactions,args["sortdir"])
     merchant_list = merchant_repository.select_all()
     tag_list = tag_repository.select_all()
-    tag_dict = {tag.id:tag for tag in tag_list}
-    return render_template("transactions/index.html",transactions=transactions,merchant_list=merchant_list,tag_list=tag_list,tag_dict=tag_dict,colour_dict = colour_dict,args=args)
+    return render_template("transactions/index.html",transactions=transactions,merchant_list=merchant_list,tag_list=tag_list,colour_dict = colour_dict,args=args)
 
 def transaction_filter(transactions,args):
     out = []
@@ -53,8 +54,8 @@ def transaction_filter(transactions,args):
         after_time = datetime.strptime(args["after_time"],"%Y-%m-%d")
     for transaction in transactions:
         if str(transaction.merchant.id) == merchant or not merchant:
-            if name in transaction.name or not name:
-                if any(str(x) in tags for x in transaction.tags) or not tags:
+            if name.lower() in transaction.name.lower() or not name:
+                if any(str(x) in tags for x in transaction.tag_ids) or not tags:
                         if int(transaction.amount) > above or not above:
                             if int(transaction.amount) < below or not below:
                                 if before_time:
@@ -67,18 +68,18 @@ def transaction_filter(transactions,args):
                                         time_check = True
                                 if time_check:
                                     out.append(transaction)
-    transactions.sort(key=lambda transaction: int(transaction.id))
-    if args.__contains__("sortdir"):
-        if args["sortdir"] == "timeup":
-            transactions.sort(key=lambda transaction: transaction.timestamp)
-        elif args["sortdir"] == "timedown":
-            transactions.sort(reverse=True,key=lambda transaction: transaction.timestamp)
-        elif args["sortdir"] == "moneyup":
-            transactions.sort(key=lambda transaction: int(transaction.amount))
-        elif args["sortdir"] == "moneydown":
-            transactions.sort(reverse=True,key=lambda transaction: int(transaction.amount))
-    print([transaction.id for transaction in transactions])
     return out
+
+def transactions_sort(transactions,sortdir):
+    if sortdir == "timeup":
+        transactions.sort(key=lambda transaction: transaction.timestamp)
+    elif sortdir == "timedown":
+        transactions.sort(reverse=True,key=lambda transaction: transaction.timestamp)
+    elif sortdir == "moneyup":
+        transactions.sort(key=lambda transaction: int(transaction.amount))
+    elif sortdir == "moneydown":
+        transactions.sort(reverse=True,key=lambda transaction: int(transaction.amount))
+    return transactions
 
 @transactions_blueprint.route("/transactions/new")
 def transaction_form():
@@ -90,16 +91,15 @@ def transaction_form():
 
 @transactions_blueprint.route("/transactions",methods=["POST"])
 def new_transaction():
-    print("new transaction")
     name = request.form["name"]
     amount = request.form["amount"]
-    tags = [int(tag) for tag in request.form.getlist("tags")]
+    timestamp = request.form["time"]
     merchant_id = request.form["merchant"]
     merchant = merchant_repository.select(merchant_id)
-    tags.extend(merchant.auto_tags)
-    tags = list(set(tags))
-    timestamp = request.form["time"]
-    transaction = Transaction(name,amount,tags,merchant_id,timestamp)
+    tag_ids = [int(tag) for tag in request.form.getlist("tags")]
+    tag_ids.extend(merchant.tag_ids)
+    tag_ids = list(set(tag_ids))
+    transaction = Transaction(name,amount,None,merchant,timestamp,tag_ids=tag_ids)
     transaction_repository.save_transaction(transaction)
     return redirect("/transactions")
 
@@ -114,18 +114,27 @@ def transaction_edit_form(id):
 @transactions_blueprint.route("/transactions/<id>")
 def show_transaction(id):
     transaction = transaction_repository.select(id)
-    return render_template("transactions/show.html",transaction=transaction)
+    return render_template("transactions/show.html",transaction=transaction,colour_dict=colour_dict)
 
 @transactions_blueprint.route("/transactions/<id>",methods=["POST"])
 def edit_transaction(id):
     name = request.form["name"]
     amount = request.form["amount"]
-    tags = [int(tag) for tag in request.form.getlist("tags")]
+    timestamp = request.form["time"]
     merchant_id = request.form["merchant"]
     merchant = merchant_repository.select(merchant_id)
-    tags.extend(merchant.auto_tags)
-    tags = list(set(tags))
-    timestamp = request.form["time"]
-    transaction = Transaction(name,amount,tags,merchant_id,timestamp,id)
+    tag_ids = [int(tag) for tag in request.form.getlist("tags")]
+    tag_ids.extend(merchant.auto_tags)
+    tag_ids = list(set(tag_ids))
+    transaction = Transaction(name,amount,None,merchant,timestamp,tag_ids=tag_ids)
     transaction_repository.update(transaction)
+    return redirect("/transactions"+id)
+
+@transactions_blueprint.route("/transactions/<id>/delete")
+def delete_transaction(id):
+    transaction_repository.select_all()
+    transaction = transaction_repository.select(id)
+    transaction.deactivated = True
+    transaction_repository.update(transaction)
+    transaction_repository.select_all()
     return redirect("/transactions")

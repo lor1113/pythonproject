@@ -8,11 +8,17 @@
         <th>Colour</th>
     </tr>
     {% for merchant in merchants %}
-    <tr>
-        <td>{{merchant.name}}</td>
+    <tr class={{colour_dict[merchant.colour]}}>
+        <td>
+            <a href="/merchants/{{merchant.id}}" class="fill">
+                <div>{{merchant.name}}</div>
+            </a>
+        </td>
         <td>
             {% for tag in merchant.auto_tags %}
-                {{tag_dict[tag].name}}
+                <a href="/tags/{{tag.id}}" class="fill">
+                    <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
+                </a>
             {% endfor %}
         </td>
         <td>{{merchant.colour}}</td>

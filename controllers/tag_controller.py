@@ -3,6 +3,7 @@ from flask import Blueprint
 from models.tag import Tag
 
 import repositories.tag_repository as tag_repository
+import repositories.transaction_repository as transaction_repository
 
 from static.constants import colour_list,colour_dict
 
@@ -25,3 +26,24 @@ def new_tag():
     tag = Tag(name,colour)
     tag_repository.save_tag(tag)
     return redirect("/tags")
+
+@tags_blueprint.route("/tags/<id>")
+def show_tag(id):
+    tag = tag_repository.select(id)
+    transactions = transaction_repository.select_tag(id)
+    transactions.sort(key=lambda transaction: int(transaction.id))
+    return render_template("tags/show.html",tag=tag,colour_dict=colour_dict,transactions=transactions)
+
+@tags_blueprint.route("/tags/<id>/edit")
+def tag_edit_form(id):
+    tag = tag_repository.select(id)
+    return render_template("tags/edit.html",tag=tag,colour_list = colour_list)
+
+@tags_blueprint.route("/tags/<id>",methods=["POST"])
+def edit_tag(id):
+    name = request.form["name"]
+    colour = request.form["colour"]
+    tag = Tag(name,colour)
+    tag.id = id
+    tag_repository.update(tag)
+    return redirect("/tags/"+id)

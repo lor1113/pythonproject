@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Tag</h2>
+<form class="newform" action="/tags/{{tag.id}}" method="POST">
+    <div>
+        <label for="name">Name:</label>
+        <input id="name" name="name" type="text" value={{tag.name}}>
+    </div>
+    <div>
+        <label for="colour">Colour:</label>
+        <select list="colour" name="colour">
+        <datalist id="colour">
+            {% for colour in colour_list %}
+                {% if colour == tag.colour %}
+                    <option value={{colour}} selected="selected">{{colour}}</option>
+                {% else %}
+                    <option value={{colour}}>{{colour}}</option>
+                {% endif %}
+            {% endfor %}
+        </datalist>
+        </select>
+    </div>
+    <div>
+        <label for="submit">Submit:</label>
+        <input id="submit" name="submit" type="submit" value="Edit Tag">
+    </div>
+</form>
+
+{% endblock %}

@@ -25,6 +25,6 @@ transaction1 = Transaction("Food from Amazon",20,[tag_id],merchant_id,now.strfti
 transaction_repository.save_transaction(transaction1)
 
 
-print(tag_repository.select_all())
-print(merchant_repository.select_all())
 print(transaction_repository.select_all())
+print(transaction_repository.select_active())
+print(transaction_repository.select_tag(9))

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+
+<span class="leftspan">
+    <table class="showtable">
+        <tr>
+            <td>Tag Name</td>
+            <td>{{tag.name}}</td>
+        </tr>
+        <tr>
+            <td>Tag Colour</td>
+            <td class={{colour_dict[tag.colour]}}>{{tag.colour}}</td>
+        </tr>
+        <tr>
+            <td>Edit Tag</td>
+            <td>
+                <form action="/tags/{{tag.id}}/edit">
+                    <button class="formbutton" type="submit" value="submit">
+                        Edit Tag
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Delete Tag</td>
+            <td>
+                <form action="/warning">
+                    <button class="formbutton" type="submit" value="submit">
+                        Delete Tag
+                    </button>
+                    <input type="hidden" id="yes_url" name="yes_url" value="/tags/{{tag.id}}/delete">
+                    <input type="hidden" id="no_url" name="no_url" value="/tags/{{tag.id}}">
+                    <input type="hidden" id="message" name="message" value="Are you sure you want to delete the tag {{tag.name}}? This action is irreversible.">
+                </form>
+            </td>
+        </tr>
+    </table>
+</span>
+<span class="rightspan">
+    <table class="displaytable">
+        <tr>
+            <th>ID</th>
+            <th>Merchant</th>
+            <th>Name</th>
+            <th>Tags</th>
+            <th>Time</th>
+            <th>Amount</th>
+        </tr>
+        {% for transaction in transactions %}
+        <tr class={{colour_dict[transaction.merchant.colour]}}>
+            <td>
+                <a href="/transactions/{{transaction.id}}" class="fill">
+                    <div>{{transaction.id}}</div>
+                </a>
+            </td>
+            <td>
+                {{transaction.merchant.name}}
+            </td>
+            <td>{{transaction.name}}</td>
+            <td>
+                {% if not transaction.tags %}
+                    <span>None</span>
+                {% else %}
+                    {% for tag in transaction.tags %}
+                        <a href="/tags/{{tag.id}}" class="fill">
+                            <span class={{colour_dict[tag.colour]}}>{{tag.name}}</span>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td>{{transaction.timestamp}}</td>
+            <td>£{{transaction.amount}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</span>
+
+
+{% endblock %}

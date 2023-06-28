@@ -1,0 +1,17 @@
+Individual pages for transactions, tags, merchant with deletion buttons
+Edit pages/functionality for tags and merchants
+Links where needed
+Formatting in general
+
+TESTS
+Make Tag
+Make Merchant
+Make Transaction
+Update Tag
+Update Merchant
+Update Transaction
+Delete Tag
+Delete Merchant
+Delete Transaction
+
+Budget?

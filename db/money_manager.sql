@@ -24,6 +24,7 @@ CREATE TABLE transactions (
   timestamp TIMESTAMP,
   tags INT[],
   merchant int,
+  deactivated BOOLEAN,
   CONSTRAINT fk_merchant
     FOREIGN KEY(merchant)
       REFERENCES merchants(id)
